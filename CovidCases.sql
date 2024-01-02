@@ -31,7 +31,7 @@ GROUP BY location, population
 ORDER BY PCTpopulationInfected desc
 
 
---Looking at countries with Highest Infection Rate compared to population, the field total_case was varchar therefore cast is used
+--Looking at countries with the Highest Infection Rate compared to population, the field total_case was varchar therefore cast is used
 
 select location, population, MAX(CAST(total_cases as float)) as HighestInfectedCount,
 MAX(((CONVERT(float, total_cases) / NULLIF(CONVERT(float, population),0))))* 100 as PCTpopulationInfected
@@ -39,7 +39,7 @@ FROM CovidDeaths
 GROUP BY location, population
 ORDER BY PCTpopulationInfected desc
 
--- Showing countries with highest death count per population
+-- Showing countries with the highest death count per population
 SELECT location, MAX(CAST(total_deaths AS float)) AS TotalDeathCount FROM CovidDeaths
 WHERE continent is not null
 GROUP BY location
@@ -51,7 +51,7 @@ WHERE continent > ''
 GROUP BY continent
 ORDER BY TotalDeathCount DESC
 
---- Global numbers PCT Death & New Cases// NULLIF function to avoid divide by zero error message.
+--- Global numbers PCT Death & New Cases// NULLIF function to avoid dividing by zero error message.
 
 SELECT SUM(CAST(new_cases AS float)) AS Total_cases, SUM(CAST(new_deaths as float)) as TotalDeaths,
 SUM(((CONVERT(float, new_deaths) / NULLIF(CONVERT(float, new_cases),0))))* 100 as DeathPCT from CovidDeaths
@@ -95,7 +95,7 @@ WHERE dat.continent = 'Europe' AND new_vaccinations >''
 --ORDER BY 2,3
 )
 -- 
-SELECT *,-- (RollingPeopleVaccinated/Population)* 100 
+SELECT *,
 CONCAT(CAST(CONVERT(float, RollingPeopleVaccinated) / NULLIF(CONVERT(float, Population),0) * 100 AS decimal(10,1)),'%')
 AS PCTVactinatedPopulation FROM popvsVac
 
@@ -131,5 +131,5 @@ JOIN CovidVaccination vac
 	ON dat.location = vac.location AND dat.date = vac.date
 WHERE dat.continent = 'Europe' AND new_vaccinations >''
 
---- Runt the veiw
+--- Runt the view
 SELECT * FROM PCTpopulationVaccinated
